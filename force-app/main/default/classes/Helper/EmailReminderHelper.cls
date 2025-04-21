@@ -8,9 +8,13 @@ public with sharing class EmailReminderHelper {
            
             List<Event> interviewEvents = [SELECT Id, Subject, StartDateTime, Location, 
                                            Description,
-                                           WhoId, OwnerId
+                                           WhoId, OwnerId, WhatId
                                            FROM Event
-                                           WHERE StartDateTime >= :tomorrow];
+                                           WHERE StartDateTime >= :tomorrow
+                                           AND WhoId != null
+                                           AND WhatId != null
+                                           AND What.Type = 'Job_Application__c'
+                                           ];
 
     
             List<Messaging.SingleEmailMessage> emails = new List<Messaging.SingleEmailMessage>();
@@ -51,7 +55,7 @@ public with sharing class EmailReminderHelper {
             LogError.createErrorItem('Event', 'sendInterviewReminders', ex.getMessage(), UserInfo.getUserId());        
         }
     }
-    
+    // Since there is lookups to two objects (contact,lead)
     private static String getEmailFromWhoId(Id whoId) {
         if (whoId.getSObjectType() == Contact.SObjectType) {
             Contact c = [SELECT Email FROM Contact WHERE Id = :whoId LIMIT 1];
@@ -62,6 +66,7 @@ public with sharing class EmailReminderHelper {
         }
         return null;
     }
+    // Since there is lookups to two objects (user,calendar)
     private static String getEmailFromOwnerId(Id ownerId) {
         if (ownerId.getSObjectType() == User.SObjectType) {
             User u = [SELECT Email FROM User WHERE Id = :ownerId LIMIT 1];
