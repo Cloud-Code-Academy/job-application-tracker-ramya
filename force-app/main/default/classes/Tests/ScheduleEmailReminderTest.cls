@@ -15,7 +15,7 @@ public with sharing class ScheduleEmailReminderTest {
                 UserName = 'testusers'+DateTime.now().getTime()+'@example.com'
             );
             insert u;
-             // Create Contact
+             // Create Contact (Candidate)
             Contact con = new Contact(
                 FirstName = 'tests',
                 LastName = 'users',

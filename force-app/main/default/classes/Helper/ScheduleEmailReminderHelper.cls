@@ -56,19 +56,25 @@ public with sharing class EmailReminderHelper {
         }
     }
     // Since there is lookups to two objects (contact,lead)
-    private static String getEmailFromWhoId(Id whoId) {
-        if (whoId.getSObjectType() == Contact.SObjectType) {
+    private static String getEmailFromWhoId(Id whoId) 
+    {
+        if (whoId.getSObjectType() == Contact.SObjectType) 
+        {
             Contact c = [SELECT Email FROM Contact WHERE Id = :whoId LIMIT 1];
             return c.Email;
-        } else if (whoId.getSObjectType() == Lead.SObjectType) {
+        } 
+        else if (whoId.getSObjectType() == Lead.SObjectType) 
+        {
             Lead l = [SELECT Email FROM Lead WHERE Id = :whoId LIMIT 1];
             return l.Email;
         }
         return null;
     }
     // Since there is lookups to two objects (user,calendar)
-    private static String getEmailFromOwnerId(Id ownerId) {
-        if (ownerId.getSObjectType() == User.SObjectType) {
+    private static String getEmailFromOwnerId(Id ownerId) 
+    {
+        if (ownerId.getSObjectType() == User.SObjectType) 
+        {
             User u = [SELECT Email FROM User WHERE Id = :ownerId LIMIT 1];
             return u.Email;
         } 
